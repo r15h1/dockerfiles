@@ -1,0 +1,7 @@
+#creates a postgres image from alpine linux
+#copies sql files (01-init.sql) into /docker-entrypoint-initdb.d to generate a new database when the container is launched
+FROM postgres:11.0-alpine
+
+COPY ./*.sql  /docker-entrypoint-initdb.d/
+
+RUN apk update -qq

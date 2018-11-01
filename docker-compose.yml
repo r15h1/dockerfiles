@@ -1,0 +1,35 @@
+#creates a new enviroment for python and django applications using postgresql
+#change image=name:tag, database settings as needed
+version: '3'
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile-web
+    command: tail -F anything    
+    environment:
+      - DATABASE_USERNAME=postgres
+      - DATABASE_PASSWORD=password123
+      - DATABASE_HOST=db
+      - DEBUG=True
+    image: web:v1
+    ports: 
+      - 8080:8080
+      - 8090:8090
+    volumes:
+      - .:/app
+    stdin_open: true
+    tty: true
+    depends_on: 
+      - db
+  
+  db:    
+    build: 
+      context: .
+      dockerfile: Dockerfile-db
+    image: db:v1
+    environment:      
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password123
+    ports: 
+      - 5432:5432
